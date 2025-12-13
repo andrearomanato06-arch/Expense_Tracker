@@ -93,7 +93,7 @@ table tr:nth-child(odd){
 .utils .page_navigator{
     display: inline-block;
     vertical-align: middle;
-    margin-right: 25%;
+    margin: 0px 20px;
     float: right;
     background-color: #FFFFFF;
     border: 2px solid #11CCCC;
@@ -101,8 +101,16 @@ table tr:nth-child(odd){
 }
 
 .utils .page_navigator a{
+    color: black;
     text-decoration: none;
+    font-family: sans-serif;
+    padding: 5px 15px;
 }
+.page_navigator a:hover{
+    background-color: #323232;
+    color: #11CCCC;
+}
+
 
 form{
     display: block;
@@ -113,7 +121,6 @@ form{
     margin: 150px auto;
     color: black;
     background-color: #FFFFFF;
-    
 }
 
 form h1{

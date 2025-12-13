@@ -66,23 +66,6 @@ public class ExpenseTrackerMainServlet extends HttpServlet{
             case "/filter":
                 filter(request,response);
             break;
-
-            // case "/filter/byAmountOver": 
-            //     getByAmountOver(request, response);
-            // break;
-
-            // case "/filter/byDate":
-            //     getbyDate(request, response);    
-            // break;
-
-            // case "/filter/byCategory": 
-            //     getByCategory(request, response);
-            // break;
-
-            // case "/filter/byDateAndCategory": 
-            //     getByDateAndCategory(request, response);
-            // break;
-
         }
     }
 
@@ -97,6 +80,7 @@ public class ExpenseTrackerMainServlet extends HttpServlet{
         }catch(NumberFormatException e){
             page = 1;
         }
+
         request.setAttribute("page", page);
         
         List<Expense> expenses =  expenseDAO.getAllExpenses(page);
@@ -128,12 +112,14 @@ public class ExpenseTrackerMainServlet extends HttpServlet{
     throws ServletException, IOException{
 
         Expense expense = expenseDAO.getById(Integer.parseInt(request.getParameter("id")));
+        
         if(expense == null){
             response.setStatus(404);
             response.getWriter().write("NULL");
         }else{
             response.getWriter().write(expense.toString());
         }
+
         request.setAttribute("expense", expense);
 
         request.getRequestDispatcher("/jsp/edit.jsp").forward(request, response);
@@ -147,25 +133,18 @@ public class ExpenseTrackerMainServlet extends HttpServlet{
         
         int id = 0;
         try{
-
             id = Integer.parseInt(request.getParameter("id"));   
-
         }catch(NumberFormatException e){
-
             e.printStackTrace();
-
             response.setStatus(400);
-
             return;
         }
 
         Expense expense = expenseDAO.getById(id);
 
         if(expense != null){
-
             response.setStatus(200);
             response.getWriter().write(expense.toString());
-
         }else{
             response.setStatus(404);
         }
@@ -184,7 +163,7 @@ public class ExpenseTrackerMainServlet extends HttpServlet{
             
             response.setStatus(200);
             
-            for (Expense e : expenses) {
+            for(Expense e : expenses) {
                 response.getWriter().println(e.toString());
             }
 
@@ -205,7 +184,6 @@ public class ExpenseTrackerMainServlet extends HttpServlet{
 
         List<Expense> expenses = expenseDAO.filter(category,dateFrom,dateTo,amount);
 
-        
         request.setAttribute("page", 1);
 
         int totalExpenses = expenseDAO.getNumberOfExpenses();
@@ -250,7 +228,6 @@ public class ExpenseTrackerMainServlet extends HttpServlet{
                 expenseDTO.description(),
                 expenseDTO.category()
             ))){
-
                 System.out.println("doPOST: ricevuto");
                 response.setStatus(200);
                 response.getWriter().write("{\"result\":\"ok\"}");
@@ -276,15 +253,10 @@ public class ExpenseTrackerMainServlet extends HttpServlet{
             
             int id = 0;
             try{
-
                 id = Integer.parseInt(request.getParameter("id"));
-
             }catch(NumberFormatException e){
-                
                 e.printStackTrace();
-
                 response.setStatus(400);
-
                 return; 
             }
             
@@ -298,7 +270,6 @@ public class ExpenseTrackerMainServlet extends HttpServlet{
                 }
                 
                 if(!request.getParameter("purchaseDate").toString().isBlank()){
-                    
                     LocalDate purchaseDate = LocalDate.parse(request.getParameter("purchaseDate"));
                     if(!purchaseDate.equals(expesne.getPurchaseDate())){
                         updatePurchaseDate = expenseDAO.updatePurchaseDate(id, purchaseDate);
@@ -306,7 +277,6 @@ public class ExpenseTrackerMainServlet extends HttpServlet{
                 }
 
                 if(!request.getParameter("amount").isBlank()){
-                    
                     double amount = Double.parseDouble(request.getParameter("amount"));
                     if(amount != expesne.getAmount()){
                         updateAmount = expenseDAO.updateAmount(id, amount);
@@ -314,7 +284,6 @@ public class ExpenseTrackerMainServlet extends HttpServlet{
                 }
 
                 if(!request.getParameter("category").isBlank()){
-
                     String category = request.getParameter("category");
                     if(!category.equals(expesne.getCategory())){
                         updateCategory = expenseDAO.updateCategory(id, category);
@@ -322,7 +291,6 @@ public class ExpenseTrackerMainServlet extends HttpServlet{
                 }
 
                 if(!request.getParameter("description").isBlank()){
-
                     String dedscription = request.getParameter("description");
                     if(!dedscription.equals(expesne.getDescription())){
                         updateDescription = expenseDAO.updateDescription(id, dedscription);
@@ -353,27 +321,21 @@ public class ExpenseTrackerMainServlet extends HttpServlet{
 
         if(path.equals("/delete")){
 
-
             String queryString = request.getQueryString();
 
             String parts[] = queryString.split("\\?id=");
             System.out.println("parts 0: " + parts[0]);
-            //System.out.println("parts 1: " + parts[1]);
             
             int id = 0;
             try{
-
                 id = Integer.parseInt(request.getParameter("id"));
-
             }catch(NumberFormatException e){
-                
                 e.printStackTrace();
                 response.setStatus(400);
                 return;
             }
 
             if(id > 0){
-
                 Expense expense = expenseDAO.getById(id);
                 if(expense != null){
                     success = expenseDAO.delete(expense);
@@ -389,131 +351,4 @@ public class ExpenseTrackerMainServlet extends HttpServlet{
             }
         }
     }   
-    
-    // private void getByAmountOver(HttpServletRequest request, HttpServletResponse response)
-    // throws ServletException, IOException{
-
-    //     response.setContentType("application/json");
-
-    //     double amount = 0;
-    //     try{
-
-    //         amount = Double.parseDouble(request.getParameter("amount"));
-
-    //     }catch(NumberFormatException e){
-
-    //         e.printStackTrace();
-
-    //         response.setStatus(400);
-
-    //         return;
-    //     }
-        
-    //     List<Expense> expenses = expenseDAO.getByAnAmountOverOf(amount);
-        
-    //     if(!expenses.isEmpty()){
-            
-    //         response.setStatus(200);
-            
-    //         for (Expense e : expenses) {
-    //             response.getWriter().println(e.toString());
-    //         }
-
-    //     }else{
-    //         response.getWriter().write("No data found");
-    //     }
-    // }
-
-    // private void getbyDate(HttpServletRequest request, HttpServletResponse response)
-    // throws ServletException, IOException{
-
-    //     response.setContentType("application/json");
-
-    //     LocalDate date = null;
-        
-    //     try{
-
-    //         date = LocalDate.parse(request.getParameter("date"));
-        
-    //     }catch(Exception e){
-            
-    //         e.printStackTrace();
-
-    //         response.setStatus(400);
-
-    //         return;
-    //     }
-
-    //     List<Expense> expenses = expenseDAO.getByStartingDate(date);
-
-    //     if(!expenses.isEmpty()){
-            
-    //         response.setStatus(200);
-
-    //         for (Expense e : expenses) {
-    //             response.getWriter().println(e.toString());
-    //         }
-
-    //     }else{
-    //         response.getWriter().write("No data found");
-    //     }
-    // }
-
-    // private void getByCategory(HttpServletRequest request, HttpServletResponse response)
-    // throws ServletException, IOException{
-
-    //     response.setContentType("application/json");
-
-    //     String category = request.getParameter("category");
-
-    //     if(category != null && !category.isBlank()){
-            
-    //         List<Expense> expenses = expenseDAO.getByCategory(category);
-
-    //         if(!expenses.isEmpty()){
-
-    //             response.setStatus(200);
-
-    //             for (Expense e : expenses) {
-    //                 response.getWriter().println(e.toString());
-    //             }
-
-    //         }else{
-    //             response.getWriter().write("No data found");
-    //         }
-
-    //     }else{
-    //         response.setStatus(400);
-    //     }
-    // }
-
-    
-    // private void getByDateAndCategory(HttpServletRequest request, HttpServletResponse response)
-    // throws ServletException, IOException{
-
-    //     response.setContentType("application/json"); 
-
-    //     String category = request.getParameter("category");
-    //     LocalDate date = LocalDate.parse(request.getParameter("date"));
-
-    //     if(category != null && date != null && !category.isBlank()){
-
-    //         List<Expense> expenses = expenseDAO.getByDateAndCategory(date, category);
-
-    //         if(!expenses.isEmpty()){
-
-    //             response.setStatus(200);
-
-    //             for(Expense e : expenses){
-    //                 response.getWriter().println(e.toString());
-    //             }
-
-    //         }else{
-    //             response.getWriter().write("No data found");
-    //         }
-
-    //     }else{
-    //         response.setStatus(400);
-    //     }
-    // }
 }

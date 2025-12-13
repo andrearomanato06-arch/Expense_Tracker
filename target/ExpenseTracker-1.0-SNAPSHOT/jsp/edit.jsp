@@ -1,12 +1,6 @@
 <%@page import="aret.entities.Expense"%>
 <%
     Expense e = (Expense) request.getAttribute("expense");
-
-    if(e == null){
-        out.println("NULL");
-    }else{
-        out.println(e.getId());
-    }
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -27,7 +21,7 @@
         <h1>Edit expense n. <%= e.getId() %> </h1>
         <input type = "text" name = "description" class = "field" placeholder = "Description" value = "<%= e.getDescription() %>">
 
-        <input type = "number" name = "amount" class = "field" placeholder = "Amount" step="2" value = "<%= e.getAmount() %>">
+        <input type = "number" name = "amount" class = "field" placeholder = "Amount" step="0.01" value = "<%= e.getAmount() %>">
 
         <select name = "category" class = "field" >
             <option disabled selected><%= e.getCategory() %></option>

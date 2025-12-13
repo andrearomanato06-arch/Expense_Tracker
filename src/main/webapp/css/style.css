@@ -3,6 +3,11 @@ body{
     color: white;
 }
 
+.displayer{
+    display: block;
+    margin-top: 150px;
+}
+
 button{
     cursor: pointer;
 }

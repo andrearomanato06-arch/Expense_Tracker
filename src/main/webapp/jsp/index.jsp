@@ -17,78 +17,75 @@
     <link rel="stylesheet" href="../css/style.css">    
 </head>
 <body>
+    <div class="displayer">  
+        <div class="utils">
+
+            <div class="page_navigator">
+                <%
+                    if(currentPage > 1){%>
+                        <a href="view?page=<%= currentPage-1 %>">Previous</a>
+                <%}%>
+
+                <%
+                    for(int i = currentPage; i < (currentPage + 5); i++){
+                        if(i > pageToShow){
+                            break;
+                        }%>
+                        <a href="view?page=<%= i %>" ><%= i %></a>
+                <%}%>
+                
+
+                <%
+                    if(currentPage < pageToShow){ %>
+                        <a href="view?page=<%= currentPage+1 %>" >Next</a>
+                <%}%>
+            </div>
         
-    <div class="utils">
-        <h2>Total: </h2>
 
-        <div class="page_navigator">
-            <%
-                if(currentPage > 1){%>
-                    <a href="view?page=<%= currentPage-1 %>">Previous</a>
-            <%}%>
-
-            <%
-                for(int i = currentPage; i < (currentPage + 5); i++){
-                    if(i > pageToShow){
-                        break;
-                    }%>
-                    <a href="view?page=<%= i %>" ><%= i %></a>
-            <%}%>
+            <a href="addNew">
+                <button class="utils_btn">
+                    Add
+                </button>
+            </a>
             
+            <a href="applyFilters">
+                <button class="utils_btn">
+                    Filter
+                </button>
+            </a>
+        </div>
+
+        <table>
+            <tr class ="tableHeader">
+                <th>Date</th>
+                <th>Description</th>
+                <th>Amount</th>
+                <th>Category</th>
+                <th>Actions</th>
+            </tr>
 
             <%
-                if(currentPage < pageToShow){ %>
-                    <a href="view?page=<%= currentPage+1 %>" >Next</a>
-            <%}%>
-        </div>
-       
-
-        <a href="addNew">
-            <button class="utils_btn">
-                Add
-            </button>
-        </a>
-        
-        <a href="applyFilters">
-            <button class="utils_btn">
-                Filter
-            </button>
-        </a>
-    </div>
-
-    <table>
-        <tr class ="tableHeader">
-            <th>Date</th>
-            <th>Description</th>
-            <th>Amount</th>
-            <th>Category</th>
-            <th>Actions</th>
-        </tr>
-
-        <%
-            for(Expense e : expenses){ %>
-
-                <tr class = "expenseData">
-                    <td> <%= e.getPurchaseDate() %> </td>
-                    <td> <%= e.getDescription() %> </td>
-                    <td> <%= e.getAmount() %> </td>
-                    <td> <%= e.getCategory() %> </td>
-                    <td class="actions">
-
-                        <button class="remove" onclick = "deleteExpense('<%= e.getId() %>')">
-                            <img src="../img/trash.svg" alt="remove">
-                        </button>
-
-                        <a href="change?id=<%= e.getId() %>">
-                            <button class="edit">
-                                <img src="../img/pencil.svg" alt="edit">
+                for(Expense e : expenses){ %>
+                    <tr class = "expenseData">
+                        <td> <%= e.getPurchaseDate() %> </td>
+                        <td> <%= e.getDescription() %> </td>
+                        <td> &euro; <%= e.getAmount() %> </td>
+                        <td> <%= e.getCategory() %> </td>
+                        <td class="actions">
+                            <button class="remove" onclick = "deleteExpense('<%= e.getId() %>')">
+                                <img src="../img/trash.svg" alt="remove">
                             </button>
-                        </a>
-                    </td>
-                </tr>
-            <%}%>
-    </table>
 
+                            <a href="change?id=<%= e.getId() %>">
+                                <button class="edit">
+                                    <img src="../img/pencil.svg" alt="edit">
+                                </button>
+                            </a>
+                        </td>
+                    </tr>
+                <%}%>
+        </table>
+    </div>
     <script>
         function deleteExpense(id){     
             
