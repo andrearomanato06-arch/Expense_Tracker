@@ -1,0 +1,5 @@
+aret\daos\ExpenseDAO.class
+aret\entities\Expense.class
+aret\utils\HibernateUtil.class
+aret\servlets\ExpenseTrackerMainServlet.class
+aret\dtos\ExpenseDTO.class
